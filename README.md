@@ -42,12 +42,15 @@ curl -O https://hnakamur.github.io/dte/download/windows_386/dte
 ```
 % ./dte -h
 Usage of ./dte:
-  -j="-": json filename (default stdin)
+  -j="": json filename (use - for stdin)
   -o="-": output filename (default stdout)
+  -t="": toml filename (use - for stdin)
   -v=false: show version and exit
 ```
 
 ## Example
+
+### JSON Example
 
 example/data.json
 
@@ -77,3 +80,34 @@ Hello, Bob!
 Hello, Charlie!
 ```
 
+
+### TOML Example
+
+example/data.toml
+
+```
+[[persons]]
+name = "Alice"
+
+[[persons]]
+name = "Bob"
+
+[[persons]]
+name = "Charlie"
+```
+
+example/hello.tpl
+
+```
+{% for person in persons %}{% if not forloop.First %}
+{% endif %}Hello, {{ person.name }}!{% endfor %}
+```
+
+Example session
+
+```
+$ ./dte -t example/data.toml example/hello.tpl
+Hello, Alice!
+Hello, Bob!
+Hello, Charlie!
+```
